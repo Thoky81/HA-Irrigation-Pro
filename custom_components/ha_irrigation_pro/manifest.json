@@ -1,0 +1,12 @@
+{
+  "domain": "ha_irrigation_pro",
+  "name": "HA Irrigation Pro",
+  "version": "0.1.0",
+  "documentation": "https://github.com/Thoky/HA-Irrigation-Integration",
+  "issue_tracker": "https://github.com/Thoky/HA-Irrigation-Integration/issues",
+  "codeowners": ["@Thoky"],
+  "config_flow": true,
+  "dependencies": [],
+  "requirements": [],
+  "iot_class": "local_polling"
+}

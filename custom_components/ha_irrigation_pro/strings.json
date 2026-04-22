@@ -1,0 +1,147 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "HA Irrigation Pro",
+        "description": "Name this irrigation controller and choose how many zones you have. You can't change the zone count later without re-adding the integration.",
+        "data": {
+          "name": "Name",
+          "zone_count": "Number of zones"
+        }
+      },
+      "zones": {
+        "title": "Zones",
+        "description": "Give each of your {count} zones a name and pick the valve switch entity.",
+        "data": {
+          "zone_1_name": "Zone 1 name",
+          "zone_1_switch": "Zone 1 valve switch",
+          "zone_2_name": "Zone 2 name",
+          "zone_2_switch": "Zone 2 valve switch",
+          "zone_3_name": "Zone 3 name",
+          "zone_3_switch": "Zone 3 valve switch",
+          "zone_4_name": "Zone 4 name",
+          "zone_4_switch": "Zone 4 valve switch",
+          "zone_5_name": "Zone 5 name",
+          "zone_5_switch": "Zone 5 valve switch",
+          "zone_6_name": "Zone 6 name",
+          "zone_6_switch": "Zone 6 valve switch",
+          "zone_7_name": "Zone 7 name",
+          "zone_7_switch": "Zone 7 valve switch",
+          "zone_8_name": "Zone 8 name",
+          "zone_8_switch": "Zone 8 valve switch",
+          "zone_9_name": "Zone 9 name",
+          "zone_9_switch": "Zone 9 valve switch",
+          "zone_10_name": "Zone 10 name",
+          "zone_10_switch": "Zone 10 valve switch",
+          "zone_11_name": "Zone 11 name",
+          "zone_11_switch": "Zone 11 valve switch",
+          "zone_12_name": "Zone 12 name",
+          "zone_12_switch": "Zone 12 valve switch",
+          "zone_13_name": "Zone 13 name",
+          "zone_13_switch": "Zone 13 valve switch",
+          "zone_14_name": "Zone 14 name",
+          "zone_14_switch": "Zone 14 valve switch",
+          "zone_15_name": "Zone 15 name",
+          "zone_15_switch": "Zone 15 valve switch",
+          "zone_16_name": "Zone 16 name",
+          "zone_16_switch": "Zone 16 valve switch"
+        }
+      },
+      "sensors": {
+        "title": "Sensors",
+        "description": "Pick the weather entity used for forecasts, your rain sensors (if any), and your water tank sensor (if any). All sensors except weather are optional.",
+        "data": {
+          "weather_entity": "Weather entity (for forecast)",
+          "rain_today_sensor": "Rain today (mm)",
+          "rain_last_hour_sensor": "Rain last hour (mm)",
+          "rain_rate_sensor": "Rain rate (mm/h)",
+          "tank_volume_sensor": "Water tank volume (L)"
+        }
+      },
+      "thresholds": {
+        "title": "Thresholds and timing",
+        "description": "Tune the rain-skip thresholds, per-zone duration clamps, and timing delays.",
+        "data": {
+          "forecast_skip_mm": "Skip if forecast ≥ (mm)",
+          "rain_threshold_mm": "Recent-rain cutoff over history window (mm)",
+          "rain_history_days": "Rain history window (days)",
+          "min_duration_min": "Minimum zone duration (minutes)",
+          "max_duration_min": "Maximum zone duration (minutes)",
+          "zone_pause_secs": "Pause between zones (seconds)",
+          "calibration_settle_secs": "Calibration settle time (seconds)",
+          "run_settle_secs": "Run settle time (seconds)",
+          "run_history_max": "Run history entries to keep"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "HA Irrigation Pro is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "zones": {
+        "title": "Zones",
+        "description": "Rename zones or reassign valve switches. To change the number of zones, remove and re-add the integration.",
+        "data": {
+          "zone_1_name": "Zone 1 name",
+          "zone_1_switch": "Zone 1 valve switch",
+          "zone_2_name": "Zone 2 name",
+          "zone_2_switch": "Zone 2 valve switch",
+          "zone_3_name": "Zone 3 name",
+          "zone_3_switch": "Zone 3 valve switch",
+          "zone_4_name": "Zone 4 name",
+          "zone_4_switch": "Zone 4 valve switch",
+          "zone_5_name": "Zone 5 name",
+          "zone_5_switch": "Zone 5 valve switch",
+          "zone_6_name": "Zone 6 name",
+          "zone_6_switch": "Zone 6 valve switch",
+          "zone_7_name": "Zone 7 name",
+          "zone_7_switch": "Zone 7 valve switch",
+          "zone_8_name": "Zone 8 name",
+          "zone_8_switch": "Zone 8 valve switch",
+          "zone_9_name": "Zone 9 name",
+          "zone_9_switch": "Zone 9 valve switch",
+          "zone_10_name": "Zone 10 name",
+          "zone_10_switch": "Zone 10 valve switch",
+          "zone_11_name": "Zone 11 name",
+          "zone_11_switch": "Zone 11 valve switch",
+          "zone_12_name": "Zone 12 name",
+          "zone_12_switch": "Zone 12 valve switch",
+          "zone_13_name": "Zone 13 name",
+          "zone_13_switch": "Zone 13 valve switch",
+          "zone_14_name": "Zone 14 name",
+          "zone_14_switch": "Zone 14 valve switch",
+          "zone_15_name": "Zone 15 name",
+          "zone_15_switch": "Zone 15 valve switch",
+          "zone_16_name": "Zone 16 name",
+          "zone_16_switch": "Zone 16 valve switch"
+        }
+      },
+      "sensors": {
+        "title": "Sensors",
+        "data": {
+          "weather_entity": "Weather entity (for forecast)",
+          "rain_today_sensor": "Rain today (mm)",
+          "rain_last_hour_sensor": "Rain last hour (mm)",
+          "rain_rate_sensor": "Rain rate (mm/h)",
+          "tank_volume_sensor": "Water tank volume (L)"
+        }
+      },
+      "thresholds": {
+        "title": "Thresholds and timing",
+        "data": {
+          "forecast_skip_mm": "Skip if forecast ≥ (mm)",
+          "rain_threshold_mm": "Recent-rain cutoff over history window (mm)",
+          "rain_history_days": "Rain history window (days)",
+          "min_duration_min": "Minimum zone duration (minutes)",
+          "max_duration_min": "Maximum zone duration (minutes)",
+          "zone_pause_secs": "Pause between zones (seconds)",
+          "calibration_settle_secs": "Calibration settle time (seconds)",
+          "run_settle_secs": "Run settle time (seconds)",
+          "run_history_max": "Run history entries to keep"
+        }
+      }
+    }
+  }
+}
