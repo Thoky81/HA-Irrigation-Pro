@@ -143,5 +143,53 @@
         }
       }
     }
+  },
+  "entity": {
+    "switch": {
+      "master_enabled": { "name": "Master enabled" },
+      "ignore_rain_next_custom": { "name": "Ignore rain on next custom run" },
+      "slot_morning_enabled": { "name": "Morning schedule enabled" },
+      "slot_afternoon_enabled": { "name": "Afternoon schedule enabled" }
+    },
+    "number": {
+      "calibration_duration": { "name": "Calibration run duration" }
+    },
+    "time": {
+      "slot_morning_time": { "name": "Morning run time" },
+      "slot_afternoon_time": { "name": "Afternoon run time" }
+    },
+    "button": {
+      "manual_run": { "name": "Run now" },
+      "manual_custom_run": { "name": "Run custom durations" },
+      "cancel": { "name": "Cancel cycle" }
+    },
+    "sensor": {
+      "next_run": { "name": "Next run" },
+      "last_run": { "name": "Last run" },
+      "rain_multiplier": { "name": "Rain multiplier" },
+      "predicted_liters": { "name": "Next run water use (est.)" }
+    }
+  },
+  "services": {
+    "manual_run": {
+      "name": "Run now",
+      "description": "Run any enabled slot immediately (respects rain multiplier)."
+    },
+    "manual_custom_run": {
+      "name": "Run custom durations",
+      "description": "Run using the per-zone custom durations, optionally ignoring rain."
+    },
+    "calibrate": {
+      "name": "Calibrate zone",
+      "description": "Measure L/min for a zone by running it and reading the tank volume drop.",
+      "fields": {
+        "zone": { "name": "Zone index", "description": "1-based zone number." },
+        "entry_id": { "name": "Entry ID", "description": "Specific integration entry." }
+      }
+    },
+    "cancel": {
+      "name": "Cancel cycle",
+      "description": "Stop any in-progress irrigation run."
+    }
   }
 }

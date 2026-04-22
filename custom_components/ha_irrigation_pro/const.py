@@ -1,9 +1,13 @@
 """Constants for HA Irrigation Pro."""
 from __future__ import annotations
 
-DOMAIN = "ha_irrigation_pro"
+from homeassistant.const import Platform
 
-# Config entry data keys
+DOMAIN = "ha_irrigation_pro"
+MANUFACTURER = "HA Irrigation Pro"
+MODEL = "Multi-zone controller"
+
+# Config entry data/option keys
 CONF_NAME = "name"
 CONF_ZONE_COUNT = "zone_count"
 CONF_ZONES = "zones"
@@ -42,4 +46,40 @@ DEFAULT_RUN_HISTORY_MAX = 10
 MIN_ZONES = 1
 MAX_ZONES = 16
 
-PLATFORMS: list[str] = []
+# Slot identity
+SLOT_MORNING = "morning"
+SLOT_AFTERNOON = "afternoon"
+SLOTS = (SLOT_MORNING, SLOT_AFTERNOON)
+
+WEEKDAYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
+
+# Storage
+STORAGE_VERSION = 1
+
+# Service names
+SERVICE_MANUAL_RUN = "manual_run"
+SERVICE_MANUAL_CUSTOM_RUN = "manual_custom_run"
+SERVICE_CALIBRATE = "calibrate"
+SERVICE_CANCEL = "cancel"
+
+# Signals (dispatcher)
+SIGNAL_DATA_UPDATED = f"{DOMAIN}_data_updated"
+
+# Default icons
+ICON_MASTER = "mdi:water-pump"
+ICON_SPRINKLER = "mdi:sprinkler-variant"
+ICON_DROP = "mdi:water"
+ICON_RAIN = "mdi:weather-rainy"
+ICON_CALENDAR = "mdi:calendar-clock"
+ICON_HISTORY = "mdi:history"
+ICON_TIMER = "mdi:timer-outline"
+ICON_CALIBRATE = "mdi:tune-variant"
+ICON_FLOW = "mdi:pipe-valve"
+
+PLATFORMS: list[Platform] = [
+    Platform.SWITCH,
+    Platform.NUMBER,
+    Platform.TIME,
+    Platform.BUTTON,
+    Platform.SENSOR,
+]

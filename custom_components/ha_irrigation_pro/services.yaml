@@ -1,0 +1,53 @@
+manual_run:
+  name: Run now
+  description: Run any enabled slot immediately (respects rain multiplier).
+  fields:
+    entry_id:
+      name: Entry ID
+      description: Specific integration entry (optional, defaults to first).
+      example: "abcd1234..."
+      selector:
+        text:
+
+manual_custom_run:
+  name: Run custom durations
+  description: Run using the per-zone custom durations, optionally ignoring rain.
+  fields:
+    entry_id:
+      name: Entry ID
+      description: Specific integration entry (optional, defaults to first).
+      example: "abcd1234..."
+      selector:
+        text:
+
+calibrate:
+  name: Calibrate zone
+  description: Measure L/min for a zone by running it and reading the tank volume drop.
+  fields:
+    zone:
+      name: Zone index
+      description: 1-based zone number.
+      required: true
+      example: 1
+      selector:
+        number:
+          min: 1
+          max: 16
+          mode: box
+    entry_id:
+      name: Entry ID
+      description: Specific integration entry (optional, defaults to first).
+      example: "abcd1234..."
+      selector:
+        text:
+
+cancel:
+  name: Cancel running cycle
+  description: Stop any in-progress irrigation run.
+  fields:
+    entry_id:
+      name: Entry ID
+      description: Specific integration entry (optional, defaults to first).
+      example: "abcd1234..."
+      selector:
+        text:
