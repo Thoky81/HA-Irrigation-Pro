@@ -124,10 +124,25 @@ class PredictedLitersSensor(IrrigationBaseEntity, SensorEntity):
         super().__init__(coordinator, "predicted_liters")
         self._attr_translation_key = "predicted_liters"
 
+    def _predict(self) -> dict[str, float]:
+        from .logic import compute_predicted_liters
+
+        return compute_predicted_liters(self.coordinator)
+
     @property
     def native_value(self) -> float:
-        # Round 3 fills this in. For now return 0 so the entity is visible.
-        return 0.0
+        return round(self._predict()["primary"], 0)
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        p = self._predict()
+        return {
+            "morning_liters": round(p["morning"], 0),
+            "afternoon_liters": round(p["afternoon"], 0),
+            "custom_liters": round(p["custom"], 0),
+            "multiplier_applied": round(self.coordinator.state.rain_multiplier, 2),
+            "next_slot": self.coordinator.state.next_run_slot or "none",
+        }
 
 
 class ZoneCalibratedAtSensor(IrrigationBaseEntity, SensorEntity):

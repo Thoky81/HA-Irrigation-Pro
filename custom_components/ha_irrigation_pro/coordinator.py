@@ -1,14 +1,10 @@
-"""Runtime coordinator: owns mutable runtime state and persists it via Store.
-
-Round 2 scope: coordinator exists, holds state, persists across restarts, and
-dispatches updates to entities. Round 3 adds actual irrigation logic on top.
-"""
+"""Runtime coordinator: owns mutable runtime state and persists it via Store."""
 from __future__ import annotations
 
+import asyncio
 import logging
 from dataclasses import asdict, dataclass, field
-from datetime import datetime
-from typing import Any
+from typing import Any, Callable
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -154,6 +150,9 @@ class IrrigationCoordinator:
             hass, STORAGE_VERSION, f"{DOMAIN}.{entry.entry_id}.state"
         )
         self._save_pending: bool = False
+        self._run_lock = asyncio.Lock()
+        self._current_task: asyncio.Task | None = None
+        self._scheduler_unsub: Callable[[], None] | None = None
 
         # Seed per-zone duration defaults so entities have sane starting values.
         for slot in self.state.slots.values():
@@ -253,24 +252,65 @@ class IrrigationCoordinator:
     def calibrated_at(self, zone_idx: int) -> str | None:
         return self.state.zone_calibrated_at.get(str(zone_idx))
 
-    # ── services (stubbed in Round 2) ────────────────────────────────────────
+    # ── actions (delegate to logic.py, serialized via _run_lock) ─────────────
+
+    async def _run_serial(self, coro_factory) -> None:
+        """Run a cycle as a cancellable, serialized task."""
+        if self._run_lock.locked():
+            _LOGGER.warning("Irrigation already in progress — ignoring new request")
+            return
+        async with self._run_lock:
+            self._current_task = asyncio.current_task()
+            try:
+                await coro_factory()
+            except asyncio.CancelledError:
+                _LOGGER.info("Irrigation cycle cancelled")
+            finally:
+                self._current_task = None
 
     async def async_run_manual(self) -> None:
-        _LOGGER.info("[stub] manual_run invoked — logic arrives in Round 3")
+        from . import logic
+
+        self.hass.async_create_task(
+            self._run_serial(lambda: logic.run_manual_cycle(self))
+        )
 
     async def async_run_manual_custom(self) -> None:
-        _LOGGER.info("[stub] manual_custom_run invoked — logic arrives in Round 3")
+        from . import logic
+
+        self.hass.async_create_task(
+            self._run_serial(lambda: logic.run_custom_cycle(self))
+        )
 
     async def async_calibrate(self, zone_idx: int) -> None:
-        _LOGGER.info("[stub] calibrate(zone=%s) — logic arrives in Round 3", zone_idx)
-        # Round 2 placeholder: stamp timestamp so we can see it flow through
-        self.state.zone_calibrated_at[str(zone_idx)] = datetime.now().isoformat(
-            timespec="seconds"
+        from . import logic
+
+        zone = next((z for z in self.config.zones if z.index == zone_idx), None)
+        if zone is None:
+            _LOGGER.warning("Calibrate: zone %s not configured", zone_idx)
+            return
+        self.hass.async_create_task(
+            self._run_serial(lambda: logic.calibrate_zone(self, zone))
         )
-        self.async_notify()
 
     async def async_cancel(self) -> None:
-        _LOGGER.info("[stub] cancel invoked — logic arrives in Round 3")
+        task = self._current_task
+        if task is None or task.done():
+            _LOGGER.info("Cancel: no active cycle")
+            return
+        task.cancel()
+
+    # ── scheduler lifecycle ──────────────────────────────────────────────────
+
+    def attach_scheduler(self, unsub: Callable[[], None]) -> None:
+        self._scheduler_unsub = unsub
+
+    def detach_scheduler(self) -> None:
+        if self._scheduler_unsub is not None:
+            try:
+                self._scheduler_unsub()
+            finally:
+                self._scheduler_unsub = None
 
 
 def get_coordinator(hass: HomeAssistant, entry: ConfigEntry) -> IrrigationCoordinator:

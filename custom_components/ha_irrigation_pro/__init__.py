@@ -8,6 +8,7 @@ from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN, PLATFORMS
 from .coordinator import IrrigationCoordinator
+from .logic import setup_scheduler
 from .services import async_register_services, async_unregister_services_if_last
 
 _LOGGER = logging.getLogger(__name__)
@@ -23,6 +24,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     await async_register_services(hass)
+
+    unsub = setup_scheduler(hass, coordinator)
+    coordinator.attach_scheduler(unsub)
 
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
 
@@ -42,6 +46,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             hass.data.get(DOMAIN, {}).get(entry.entry_id, {}).get("coordinator")
         )
         if coordinator is not None:
+            coordinator.detach_scheduler()
             await coordinator.async_save()
         hass.data[DOMAIN].pop(entry.entry_id, None)
         if not hass.data[DOMAIN]:
