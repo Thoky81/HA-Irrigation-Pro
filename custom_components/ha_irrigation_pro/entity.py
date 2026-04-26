@@ -1,6 +1,7 @@
 """Base entity class — shared device info + dispatcher subscription."""
 from __future__ import annotations
 
+from homeassistant.core import callback
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import Entity
@@ -35,5 +36,6 @@ class IrrigationBaseEntity(Entity):
             )
         )
 
+    @callback
     def _handle_coordinator_update(self) -> None:
         self.async_write_ha_state()
